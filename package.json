@@ -1,0 +1,26 @@
+{
+  "name": "setup-age-action",
+  "version": "1.0.0",
+  "description": "Setup age and add it to the PATH",
+  "main": "./lib/main.js",
+  "repository": "git@github.com:adnsio/setup-age-action.git",
+  "author": "Alessio Dionisi <hello@adns.io>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc && ncc build",
+    "format": "prettier --write **/*.ts"
+  },
+  "devDependencies": {
+    "@types/node": "12",
+    "@types/semver": "^7.3.6",
+    "@vercel/ncc": "^0.28.6",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
+    "@actions/tool-cache": "^1.7.1",
+    "semver": "^7.3.5"
+  }
+}
