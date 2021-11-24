@@ -3,7 +3,7 @@ name: ci
 on: [pull_request]
 
 jobs:
-  version:
+  with-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
