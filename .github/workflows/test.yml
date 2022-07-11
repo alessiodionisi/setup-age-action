@@ -1,0 +1,42 @@
+name: Test
+
+on: [pull_request]
+
+jobs:
+  with-version:
+    name: With version
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize age with specific version
+        uses: ./
+        with:
+          version: 1.0.0-rc.3
+
+      - name: Test age
+        run: age --version
+
+  latest:
+    name: Latest
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize age
+        uses: ./
+
+      - name: Test age
+        run: age --version

@@ -1,16 +1,20 @@
 name: Setup age
 description: Setup age and add it to the PATH
+
 inputs:
   version:
     description: The age version to download (if necessary) and use. Supports semver spec and ranges.
     required: false
+
   token:
     description: Used to fetch latest release tag from GitHub. Since there's a default, this is typically not supplied by the user.
     default: ${{ github.token }}
     required: false
+
 runs:
-  using: node12
+  using: node16
   main: ./dist/index.js
+
 branding:
   icon: lock
   color: gray-dark
