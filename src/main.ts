@@ -14,6 +14,14 @@ function getArch(arch: string) {
   return mappings[arch] || arch
 }
 
+function getPlatform(platform: string) {
+  const mappings: Record<string, string> = {
+    win32: "windows",
+  }
+
+  return mappings[platform] || platform
+}
+
 async function getAgePath(version: string): Promise<string> {
   const foundCachePath = toolCache.find("age", version)
   if (foundCachePath) {
@@ -21,9 +29,15 @@ async function getAgePath(version: string): Promise<string> {
     return foundCachePath
   }
 
-  const platform = os.platform()
+  const platform = getPlatform(os.platform())
   const arch = getArch(os.arch())
-  const downloadUrl = `https://github.com/FiloSottile/age/releases/download/${version}/age-${version}-${platform}-${arch}.tar.gz`
+
+  let archiveExt = "tar.gz"
+  if (platform == "windows") {
+    archiveExt = "zip"
+  }
+
+  const downloadUrl = `https://github.com/FiloSottile/age/releases/download/${version}/age-${version}-${platform}-${arch}.${archiveExt}`
 
   core.info(`Downloading age version ${version} from ${downloadUrl}`)
   const downloadPath = await toolCache.downloadTool(downloadUrl)
@@ -54,6 +68,10 @@ async function findRelease(
 
   for (const release of releases.data) {
     if (versionSpec == "") {
+      if (release.draft || release.prerelease) {
+        continue
+      }
+
       core.info(`Satisfied version is ${release.tag_name}`)
       return release.tag_name
     } else {
