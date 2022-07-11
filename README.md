@@ -8,7 +8,7 @@ Basic:
 
 ```yaml
 steps:
-  - uses: adnsio/setup-age-action@v1.1.0
+  - uses: adnsio/setup-age-action@v1.2.0
   - run: age --version
 ```
 
@@ -16,7 +16,7 @@ Specific version:
 
 ```yaml
 steps:
-  - uses: adnsio/setup-age-action@v1.1.0
+  - uses: adnsio/setup-age-action@v1.2.0
     with:
       version: ^1.0.0
   - run: age --version
