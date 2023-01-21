@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "Setup age and add it to the PATH",
   "main": "./lib/main.js",
-  "repository": "git@github.com:adnsio/setup-age-action.git",
+  "repository": "git@github.com:alessiodionisi/setup-age-action.git",
   "author": "Alessio Dionisi <hello@adns.io>",
   "license": "MIT",
   "private": true,
