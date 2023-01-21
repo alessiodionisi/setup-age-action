@@ -8,7 +8,7 @@ Basic:
 
 ```yaml
 steps:
-  - uses: alessiodionisi/setup-age-action@v1.2.0
+  - uses: alessiodionisi/setup-age-action@v1.2.1
   - run: age --version
 ```
 
@@ -16,7 +16,7 @@ Specific version:
 
 ```yaml
 steps:
-  - uses: alessiodionisi/setup-age-action@v1.2.0
+  - uses: alessiodionisi/setup-age-action@v1.2.1
     with:
       version: ^1.0.0
   - run: age --version
