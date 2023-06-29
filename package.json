@@ -16,7 +16,7 @@
     "@types/semver": "^7.3.13",
     "@vercel/ncc": "^0.34.0",
     "prettier": "^2.8.8",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
