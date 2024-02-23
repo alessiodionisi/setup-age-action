@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Initialize age with specific version
         uses: ./
         with:
-          version: 1.0.0-rc.3
+          version: ^1.1.0
 
       - name: Test age
         run: age --version
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Initialize age
         uses: ./
