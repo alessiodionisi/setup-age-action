@@ -1,9 +1,34 @@
 name: Test
 
-on: [pull_request]
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  with-version:
+  latest:
+    name: Latest
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize age
+        uses: ./
+
+      - name: Test age
+        run: age --version
+
+  withVersion:
     name: With version
     runs-on: ${{ matrix.operating-system }}
 
@@ -19,24 +44,6 @@ jobs:
         uses: ./
         with:
           version: ^1.1.0
-
-      - name: Test age
-        run: age --version
-
-  latest:
-    name: Latest
-    runs-on: ${{ matrix.operating-system }}
-
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macos-latest]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Initialize age
-        uses: ./
 
       - name: Test age
         run: age --version

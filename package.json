@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "tsc && ncc build",
+    "build": "ncc build src/main.ts --license licenses.txt",
     "format": "prettier --write **/*.ts"
   },
   "devDependencies": {
