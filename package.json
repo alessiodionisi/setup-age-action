@@ -15,7 +15,7 @@
     "@types/node": "20",
     "@types/semver": "^7.3.13",
     "@vercel/ncc": "^0.38.1",
-    "prettier": "^3.2.5",
+    "prettier": "^3.5.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
