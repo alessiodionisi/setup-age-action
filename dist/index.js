@@ -27208,6 +27208,77 @@ function extractTar(file_1, dest_1) {
     return dest;
   });
 }
+function extractZip(file, dest) {
+  return __awaiter9(this, void 0, void 0, function* () {
+    if (!file) {
+      throw new Error("parameter 'file' is required");
+    }
+    dest = yield _createExtractFolder(dest);
+    if (IS_WINDOWS3) {
+      yield extractZipWin(file, dest);
+    } else {
+      yield extractZipNix(file, dest);
+    }
+    return dest;
+  });
+}
+function extractZipWin(file, dest) {
+  return __awaiter9(this, void 0, void 0, function* () {
+    const escapedFile = file.replace(/'/g, "''").replace(/"|\n|\r/g, "");
+    const escapedDest = dest.replace(/'/g, "''").replace(/"|\n|\r/g, "");
+    const pwshPath = yield which("pwsh", false);
+    if (pwshPath) {
+      const pwshCommand = [
+        `$ErrorActionPreference = 'Stop' ;`,
+        `try { Add-Type -AssemblyName System.IO.Compression.ZipFile } catch { } ;`,
+        `try { [System.IO.Compression.ZipFile]::ExtractToDirectory('${escapedFile}', '${escapedDest}', $true) }`,
+        `catch { if (($_.Exception.GetType().FullName -eq 'System.Management.Automation.MethodException') -or ($_.Exception.GetType().FullName -eq 'System.Management.Automation.RuntimeException') ){ Expand-Archive -LiteralPath '${escapedFile}' -DestinationPath '${escapedDest}' -Force } else { throw $_ } } ;`
+      ].join(" ");
+      const args = [
+        "-NoLogo",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Unrestricted",
+        "-Command",
+        pwshCommand
+      ];
+      debug(`Using pwsh at path: ${pwshPath}`);
+      yield exec(`"${pwshPath}"`, args);
+    } else {
+      const powershellCommand = [
+        `$ErrorActionPreference = 'Stop' ;`,
+        `try { Add-Type -AssemblyName System.IO.Compression.FileSystem } catch { } ;`,
+        `if ((Get-Command -Name Expand-Archive -Module Microsoft.PowerShell.Archive -ErrorAction Ignore)) { Expand-Archive -LiteralPath '${escapedFile}' -DestinationPath '${escapedDest}' -Force }`,
+        `else {[System.IO.Compression.ZipFile]::ExtractToDirectory('${escapedFile}', '${escapedDest}', $true) }`
+      ].join(" ");
+      const args = [
+        "-NoLogo",
+        "-Sta",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Unrestricted",
+        "-Command",
+        powershellCommand
+      ];
+      const powershellPath = yield which("powershell", true);
+      debug(`Using powershell at path: ${powershellPath}`);
+      yield exec(`"${powershellPath}"`, args);
+    }
+  });
+}
+function extractZipNix(file, dest) {
+  return __awaiter9(this, void 0, void 0, function* () {
+    const unzipPath = yield which("unzip", true);
+    const args = [file];
+    if (!isDebug()) {
+      args.unshift("-q");
+    }
+    args.unshift("-o");
+    yield exec(`"${unzipPath}"`, args, { cwd: dest });
+  });
+}
 function cacheDir(sourceDir, tool, version, arch3) {
   return __awaiter9(this, void 0, void 0, function* () {
     version = semver2.clean(version) || version;
@@ -27373,7 +27444,7 @@ async function getAgePath(version) {
   const downloadPath = await downloadTool(downloadUrl);
   info(`Successfully downloaded age to ${downloadPath}`);
   info("Extracting age...");
-  const extractPath = await extractTar(downloadPath);
+  const extractPath = platform2 === "windows" ? await extractZip(downloadPath) : await extractTar(downloadPath);
   info(`Successfully extracted age to ${extractPath}`);
   info("Adding age to the cache...");
   const cachePath = await cacheDir(extractPath, "age", version);

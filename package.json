@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --legal-comments=linked",
-    "format": "prettier --write **/*.ts"
+    "format": "prettier --write \"**/*.ts\""
   },
   "devDependencies": {
     "@types/node": "^24.12.0",

@@ -44,7 +44,10 @@ async function getAgePath(version: string): Promise<string> {
   core.info(`Successfully downloaded age to ${downloadPath}`)
 
   core.info("Extracting age...")
-  const extractPath = await toolCache.extractTar(downloadPath)
+  const extractPath =
+    platform === "windows"
+      ? await toolCache.extractZip(downloadPath)
+      : await toolCache.extractTar(downloadPath)
   core.info(`Successfully extracted age to ${extractPath}`)
 
   core.info("Adding age to the cache...")
