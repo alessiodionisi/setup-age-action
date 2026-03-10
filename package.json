@@ -4,7 +4,7 @@
   "description": "Setup age and add it to the PATH",
   "main": "./dist/index.js",
   "repository": "git@github.com:alessiodionisi/setup-age-action.git",
-  "author": "Alessio Dionisi <hello@adns.io>",
+  "author": "Alessio Dionisi <me@alessiodionisi.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
